@@ -14,5 +14,5 @@
         <put-attribute name="titolo" value="Benvenuti in AlphaShop" />
         <put-attribute name="content" value="/WEB-INF/view/welcome.jsp" />
     </definition>
-
+ 
 </tiles-definitions>
