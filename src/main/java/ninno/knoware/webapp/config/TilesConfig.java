@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 
 @Configuration
-public class TelesConfig {
+public class TilesConfig {
 
     @Bean
     public TilesConfigurer tilesConfigurer() {
