@@ -5,9 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/")
 public class indexController {
 
-    @RequestMapping(value="index")
+    @RequestMapping(value = "index")
     public String getWelcome(Model model) {
 
         model.addAttribute("intestazione", "Benvenuti nel sito Alpha Shop 2");
@@ -16,7 +17,7 @@ public class indexController {
         return "index";
     }
 
-    @RequestMapping(value="/")
+    @RequestMapping
     public String getWelcome2(Model model) {
 
         model.addAttribute("intestazione", "Benvenuti nel sito Alpha Shop");
