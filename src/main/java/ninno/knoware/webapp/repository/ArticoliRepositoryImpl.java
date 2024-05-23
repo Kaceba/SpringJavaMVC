@@ -30,8 +30,19 @@ public class ArticoliRepositoryImpl implements ArticoliRepository {
 
     @Override
     public void InsArticolo(Articoli articolo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'InsArticolo'");
+
+        String Sql = "EXEC Sp_InsArticoli '" +
+                articolo.getCodArt() + "','" +
+                articolo.getDescrizione().replace("'", "''") + "','" +
+                articolo.getUm() + "','" +
+                articolo.getCodStat() + "','" +
+                articolo.getPzCart() + "','" +
+                articolo.getPesoNetto() + "','" +
+                articolo.getIdIva() + "','" +
+                articolo.getIdStatoArt() + "','" +
+                articolo.getIdFamAss() + "'";
+
+                jdbcTemplate.update(Sql);
     }
 
     @Override
