@@ -16,7 +16,7 @@ public class ArticoliRepositoryImpl implements ArticoliRepository {
 
     @Override
     public List<Articoli> SelArticoliByFilter(String Filtro) {
-        String Sql = "EXEC [dbo].[Sp_SelArticoli] '" + Filtro + "';";
+        String Sql = "EXEC [dbo].[Sp_SelArticoli3] '" + Filtro + "';";
         List<Articoli> articoli = jdbcTemplate.query(Sql, new ArticoliMapper());
 
         return articoli;
@@ -42,7 +42,7 @@ public class ArticoliRepositoryImpl implements ArticoliRepository {
                 articolo.getIdStatoArt() + "','" +
                 articolo.getIdFamAss() + "'";
 
-                jdbcTemplate.update(Sql);
+        jdbcTemplate.update(Sql);
     }
 
     @Override
