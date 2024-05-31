@@ -1,10 +1,12 @@
 package ninno.knoware.webapp.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.MatrixVariable;
@@ -78,9 +80,47 @@ public class ArticoliController {
         List<String> OrderBy = parametri.get("OrderBy");
         List<String> Paging = parametri.get("paging");
 
-        if(orderBy != null){
-
+        if (OrderBy != null) {
+            orderBy = OrderBy.get(0);
+            tipo = OrderBy.get(1);
         }
+
+        if (Paging != null) {
+            SkipValue = Long.parseLong(Paging.get(0));
+            LimitValue = Long.parseLong(Paging.get(1));
+        }
+
+        List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter, orderBy, tipo);
+
+        recordset = recordset
+                .stream()
+                .filter(u -> IdRep.contains(Integer.toString(u.getIdFamAss())))
+                .filter(u -> u.getQtaMag() > 0)
+                .filter(u -> u.getPrezzo() > 0)
+                .collect(Collectors.toList());
+
+        if (recordset != null)
+            NumArt = recordset.size();
+
+        recordset = recordset
+                .stream()
+                .skip(SkipValue)
+                .limit(LimitValue)
+                .collect(Collectors.toList());
+
+        model.addAttribute("Articoli", recordset);
+        model.addAttribute("NumArt", NumArt);
+        model.addAttribute("Titolo", "Ricerca Articoli");
+
+        return "articoli";
     }
 
+    // http://localhost:8080/AlphaShop/articoli/cerca/barilla/creati?daData=2010-10-31&aData=2015-10-31
+    @RequestMapping(value = "/cerca/{filter}/creati", method = RequestMethod.GET)
+    public String GetArticoliByFilterDate(@PathVariable("filter") String Filter,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("daData") Date startDate,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("aData") Date endDate,
+            Model model) {
+return "";
+    }
 }
