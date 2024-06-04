@@ -11,12 +11,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ninno.knoware.webapp.domain.Articoli;
+import ninno.knoware.webapp.domain.FamAssort;
+import ninno.knoware.webapp.domain.Iva;
+import ninno.knoware.webapp.repository.FamAssRepository;
+import ninno.knoware.webapp.repository.IvaRepository;
 import ninno.knoware.webapp.service.ArticoliService;
 
 @Controller
@@ -24,7 +30,13 @@ import ninno.knoware.webapp.service.ArticoliService;
 public class ArticoliController {
 
     @Autowired
+    private IvaRepository ivaRepository;
+
+    @Autowired
     private ArticoliService articoliService;
+
+    @Autowired
+    private FamAssRepository famAssRepository;
 
     private int NumArt = 0;
     private List<Articoli> recordset;
@@ -157,11 +169,24 @@ public class ArticoliController {
 
     @GetMapping(value = "/aggiungi")
     public String InsArticoli(Model model) {
-
         Articoli articolo = new Articoli();
+
+        List<FamAssort> famAssort = famAssRepository.SelFamAssort();
+        List<Iva> iva = ivaRepository.SelIva();
+
         model.addAttribute("Titolo", "Inserimento Nuovo Articolo");
+        model.addAttribute("famAssort", famAssort);
+        model.addAttribute("iva", iva);
         model.addAttribute("newArticolo", articolo);
+
         return "insArticolo";
     }
 
+    @PostMapping(value = "/aggiungi")
+    public String GestInsArticoli(@ModelAttribute("newArticolo") Articoli articolo) {
+
+        articoliService.InsArticolo(articolo);
+
+        return "redirect:/articoli/cerca/" + articolo.getCodArt();
+    }
 }
