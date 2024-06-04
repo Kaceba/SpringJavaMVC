@@ -24,7 +24,7 @@ public class ArticoliRepositoryImpl implements ArticoliRepository {
 
     @Override
     public List<Articoli> SelArticoliByFilter(String Filtro, String OrderBy, String Tipo) {
-        String Sql = "EXEC [dbo].[Sp_SelArticoli3] '" + Filtro + "','" + OrderBy + "','" + Tipo + "'";
+        String Sql = "EXEC [dbo].[Sp_SelArticoli4] '" + Filtro + "','" + OrderBy + "','" + Tipo + "'";
 
         List<Articoli> articoli = jdbcTemplate.query(Sql, new ArticoliMapper());
 
