@@ -121,6 +121,38 @@ public class ArticoliController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("daData") Date startDate,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("aData") Date endDate,
             Model model) {
-return "";
+
+        List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter)
+                .stream()
+                .filter(u -> u.getDataCreaz().after(startDate))
+                .filter(U -> U.getDataCreaz().before(endDate))
+                .collect(Collectors.toList());
+
+        if (recordset != null)
+            NumArt = recordset.size();
+
+        model.addAttribute("NumArt", NumArt);
+        model.addAttribute("Titolo", "Ricerca Articoli");
+        model.addAttribute("Titolo2", "Risultati Ricerca " + Filter);
+        model.addAttribute("Articoli", recordset);
+
+        return "articoli";
     }
+
+    @RequestMapping(value = "/infoart/{codart}", method = RequestMethod.GET)
+    public String GetDettArticolo(@PathVariable("codart") String CodArt, Model model) {
+
+        Articoli articolo = null;
+        recordset = articoliService.SelArticoliByFilter(CodArt);
+
+        if (recordset != null)
+            articolo = recordset.get(0);
+
+        model.addAttribute("Titolo", "Dettaglio Articolo");
+        model.addAttribute("Titolo2", "Dati Articolo" + CodArt);
+        model.addAttribute("articolo", articolo);
+
+        return "infoArticolo";
+    }
+
 }
