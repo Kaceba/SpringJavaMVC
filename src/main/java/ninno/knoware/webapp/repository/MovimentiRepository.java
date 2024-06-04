@@ -7,7 +7,7 @@ public interface MovimentiRepository {
 
     Movimenti SelMovimentiByCodArt(String CodArt);
 
-    List<Movimenti> SelMovimentyByFilter(String Filtro);
+    List<Movimenti> SelMovimentiByFilter(String Filtro);
 
     List<Movimenti> SelArticoliByFilter(String Filtro, String OrderBy, String Tipo);
 }
